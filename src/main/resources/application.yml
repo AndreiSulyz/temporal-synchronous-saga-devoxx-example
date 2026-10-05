@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: temporal-saga-cancellation-demo
+  temporal:
+    namespace: default
+    connection:
+      target: ${TEMPORAL_HOST:localhost}:${TEMPORAL_PORT:7233}
+    workers-auto-discovery:
+      packages: com.skyro.saga
+
+demo:
+  hold-product-url: http://localhost:8666
+  compensation-product-url: http://localhost:8667
+  toxiproxy-admin-url: http://localhost:8474
+  hold-latency: 8s
+  compensation-latency: 2s

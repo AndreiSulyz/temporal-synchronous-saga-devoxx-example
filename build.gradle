@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.4'
+}
+
+group = 'com.skyro'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform('org.springframework.boot:spring-boot-dependencies:4.0.4')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'io.temporal:temporal-spring-boot-starter:1.38.0'
+    implementation 'io.temporal:temporal-sdk:1.38.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('bootRun') {
+    args = ['--spring.main.banner-mode=off']
+    // grpc-netty still reaches for sun.misc.Unsafe, which warns loudly on Java 24+.
+    jvmArgs = ['--sun-misc-unsafe-memory-access=allow']
+}

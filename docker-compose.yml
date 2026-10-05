@@ -1,0 +1,31 @@
+services:
+  temporal:
+    image: temporalio/temporal:1.8.2
+    container_name: saga-demo-temporal
+    command: [ "server", "start-dev", "--ip", "0.0.0.0", "--log-level", "warn" ]
+    ports:
+      - "7233:7233"
+      - "8233:8233"
+    healthcheck:
+      test: [ "CMD", "temporal", "operator", "cluster", "health", "--address", "127.0.0.1:7233" ]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.12.0
+    container_name: saga-demo-toxiproxy
+    command: [ "-host=0.0.0.0", "-config=/etc/toxiproxy/proxies.json" ]
+    volumes:
+      - ./toxiproxy/proxies.json:/etc/toxiproxy/proxies.json:ro
+    ports:
+      - "8474:8474"
+      - "8666:8666"
+      - "8667:8667"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: [ "CMD", "/toxiproxy-cli", "list" ]
+      interval: 3s
+      timeout: 5s
+      retries: 20

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "product-hold",
+    "listen": "0.0.0.0:8666",
+    "upstream": "host.docker.internal:8080",
+    "enabled": true
+  },
+  {
+    "name": "product-compensation",
+    "listen": "0.0.0.0:8667",
+    "upstream": "host.docker.internal:8080",
+    "enabled": true
+  }
+]
